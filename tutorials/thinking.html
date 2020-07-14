@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Thinking in data structures</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    
+    <meta name="description" content="">
+    <link rel="preload" href="/assets/css/0.styles.34d67128.css" as="style"><link rel="preload" href="/assets/js/app.bff747f1.js" as="script"><link rel="preload" href="/assets/js/2.b932d417.js" as="script"><link rel="preload" href="/assets/js/6.3e06a623.js" as="script"><link rel="prefetch" href="/assets/js/3.37a74d58.js"><link rel="prefetch" href="/assets/js/4.7d5f245c.js"><link rel="prefetch" href="/assets/js/5.03de80f3.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.34d67128.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="thinking-in-data-structures"><a href="#thinking-in-data-structures" class="header-anchor">#</a> Thinking in data structures</h1> <p>You're already using many data structures in your programs. Here's
+and example.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> person <span class="token operator">=</span> <span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">'Mikeal Rogers'</span><span class="token punctuation">,</span>
+  github<span class="token operator">:</span> <span class="token string">'mikeal'</span><span class="token punctuation">,</span>
+  twitter<span class="token operator">:</span> <span class="token string">'@mikeal'</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Let's think about what this really is.</p> <p>We've taken some strings and we've assigned them to properties.
+If we didn't assign them to properties, how would we know what they mean?
+We only know what the values mean because we've assigned them to
+properties that mean something.</p> <p>What would it mean if we were to assign a value of <code>null</code> to the &quot;twitter&quot;
+property? It would mean that person isn't on twitter! The types we use
+for the values have meaning too.</p> <p>If you pass this object to another function, it can tell who this person is
+because it contains references to the information about that person. In IPLD,
+we would call <code>person</code> a <strong>node</strong>, and the properties that person contains references
+to would also be <strong>nodes</strong>. If we're talking about everything this person references,
+and everything those references might reference, we would call that the person's <strong>graph</strong>.</p> <p>Now let's build a data structure that captures some relationships between
+nodes.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> earth <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">const</span> pluto <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">index</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">person<span class="token punctuation">,</span> planet</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  planet<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>person<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">'Mikeal Rogers'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> earth<span class="token punctuation">)</span>
+<span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">'Eric Myhre'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> earth<span class="token punctuation">)</span>
+<span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">'Volker Mische'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> earth<span class="token punctuation">)</span>
+<span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">'Emory'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> pluto<span class="token punctuation">)</span>
+<span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">'Oglethorpe'</span><span class="token punctuation">}</span><span class="token punctuation">,</span> pluto<span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> galaxy <span class="token operator">=</span> <span class="token punctuation">{</span> earth<span class="token punctuation">,</span> pluto <span class="token punctuation">}</span>
+</code></pre></div><p>Let's explore our graph of the galaxy. It has two properties, one for each planet
+we've decided to index. If I want to see who is on planet earth, I check that property.</p> <p>I know that Mikeal, Eric, and Volker are all on the same planet not because of a property
+<em>inside</em> their graph but because of the <strong>structure</strong> of the graph that linked to them.</p> <p>There's a huge world of data structures out there, some of which you may be familiar with
+and some that you may not be familiar with yet. But something you need to keep in mind
+as you learn IPLD is that how you <em>arrive</em> at information is often as important, if not more
+important, than the information you arrive at.</p> <h2 id="addressing"><a href="#addressing" class="header-anchor">#</a> Addressing</h2> <p>Depending on what language you program in, you may be familiar with the concept of a pointer.
+If you aren't, it's just a way to reference data in one place while it lives in another place.
+URLs are like pointers for The Web, they let you put a reference on one web page to a web page
+that could be on the other side of the world.</p> <p>In IPLD we use a standard called <a href="">CID</a> for linking data together. CID's act like pointers <strong>and</strong>
+they act like URLs. They let us safely reference data that might be on the other side of the
+internet, or locally in memory, or anywhere else. This is how we decentralize data structures.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> Block <span class="token keyword">from</span> <span class="token string">'@ipld/block/defaults.js'</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">example</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> person <span class="token operator">=</span> <span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">'Mikeal Rogers'</span><span class="token punctuation">,</span>
+    github<span class="token operator">:</span> <span class="token string">'mikeal'</span><span class="token punctuation">,</span>
+    twitter<span class="token operator">:</span> <span class="token string">'@mikeal'</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">const</span> block <span class="token operator">=</span> Block<span class="token punctuation">.</span><span class="token function">encoder</span><span class="token punctuation">(</span>person<span class="token punctuation">,</span> <span class="token string">'json'</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> cid <span class="token operator">=</span> <span class="token keyword">await</span> block<span class="token punctuation">.</span><span class="token function">cid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>cid<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">example</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre></div><p>Prints</p> <div class="language- extra-class"><pre class="language-text"><code>bagaaierakbgholyvqnp2kjpr5ep6yh6u4uhop7cv7wvabydbctksletsilkq
+</code></pre></div><p>This is the <strong>address</strong> (CID) of this data.</p> <p>The first thing to notice about this code is that we didn't <em>assign</em> a key to this data. We
+encoded the data as <code>'json'</code> and then we got the data's address.</p> <p>A CID tells us two things, it tells us how the data was encoded (<code>json</code>) and it tells us the
+<strong>hash</strong> of the data. With this identifier, I can store this data anywhere on the internet.
+I can then retreive this data from anyone on the internet <strong>without trusting them</strong> 😱</p> <p>Let's look back at a few things we did.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> block <span class="token operator">=</span> Block<span class="token punctuation">.</span><span class="token function">encoder</span><span class="token punctuation">(</span>person<span class="token punctuation">,</span> <span class="token string">'json'</span><span class="token punctuation">)</span>
+</code></pre></div><p>We encoded this data using JSON, now it has been serialized to a binary representation we
+can store and/or send to someone.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> cid <span class="token operator">=</span> <span class="token keyword">await</span> block<span class="token punctuation">.</span><span class="token function">cid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre></div><p>Then we're going to do a cryptographic computation on that serialized binary that will give us
+a <strong>globally unique</strong> identifier for that binary. We return a CID that tells us &quot;this is JSON data
+that matches this <strong>hash</strong>.&quot;</p> <p>When can now ask any random device on the internet &quot;do you have this CID?&quot;</p> <p>If they say &quot;yes, here's that data&quot; I can receive the data without needing to trust them
+because I'm going to compute the hash of that data after I receive it and if it doesn't
+match the CID's hash I know they're lying.</p> <p>Once I have the binary data that matches the CID, I know that I need to decode this data with JSON
+because that's also in the CID. When one person sends another person data this way, the in-memory
+representations of these data structures are identical on each machine.</p> <p>It's worth taking a break and considering what this means.</p> <p>Hashes let anyone exchange <strong>data</strong> around the internet. CID's let anyone exchange <strong>data structures</strong>
+around the internet.</p> <h1 id="linking"><a href="#linking" class="header-anchor">#</a> Linking</h1> <p>Here's where things get <strong>really</strong> interesting.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> <span class="token function-variable function">createPerson</span> <span class="token operator">=</span> <span class="token parameter">name</span> <span class="token operator">=&gt;</span> Block<span class="token punctuation">.</span><span class="token function">encoder</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">'json'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">createGalaxy</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> mikeal <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">createPerson</span><span class="token punctuation">(</span><span class="token string">'Mikeal Rogers'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">cid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> eric <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">createPerson</span><span class="token punctuation">(</span><span class="token string">'Eric Myhre'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">cid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> volker <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">createPerson</span><span class="token punctuation">(</span><span class="token string">'Volker Mische'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">cid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> elon <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">createPerson</span><span class="token punctuation">(</span><span class="token string">'Elon Musk'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">cid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">const</span> galaxy <span class="token operator">=</span> <span class="token punctuation">{</span>
+    americans<span class="token operator">:</span> <span class="token punctuation">[</span> eric<span class="token punctuation">,</span> mikeal<span class="token punctuation">,</span> elon <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    inAmerica<span class="token operator">:</span> <span class="token punctuation">[</span> mikeal <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    onEarth<span class="token operator">:</span> <span class="token punctuation">[</span> mikeal<span class="token punctuation">,</span> eric<span class="token punctuation">,</span> volker <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    onMars<span class="token operator">:</span> <span class="token punctuation">[</span> elon <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">const</span> block <span class="token operator">=</span> Block<span class="token punctuation">.</span><span class="token function">encoder</span><span class="token punctuation">(</span>galaxy<span class="token punctuation">,</span> <span class="token string">'dag-cbor'</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> cid <span class="token operator">=</span> <span class="token keyword">await</span> block<span class="token punctuation">.</span><span class="token function">cid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>cid<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">createGalaxy</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre></div><p>Now we have a data structure made of <strong>blocks</strong>. We call each hashed piece of data a <strong>block</strong>.
+A block could have one, or many nodes. It decode to into all kinds of structures and, most importantly,
+it could <strong>link</strong> to other <strong>blocks</strong>.</p> <p>In the above example, we created a <strong>block</strong> for each person. We then use the CID for each <strong>block</strong>
+to reference every person in our index of the galaxy. Note that we can't use JSON to encode the index
+of the galaxy and have to use <code>'dag-cbor'</code>. JSON has a strictly defined set of types and our Link
+data type (CID) isn't in that set, so we use a codec the IPLD team wrote called <code>dag-cbor</code> because
+it knows how to represent links from any CID.</p> <p>Let's pause for a moment and talk about what this means. CIDs can be encoded for any existing serialization
+or <strong>any future</strong> serialization format. More importantly, a data structure can freely create link
+<em>between</em> these serializations.</p> <p>Now, let's ask the internet for this index of the galaxy and pause again.</p> <p>Before we ask the internet for the the block data of all these people, what can we say with <strong>only</strong>
+this index data.</p> <p>What can we learn from just the hashes of the data?</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token punctuation">{</span> americans<span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token function">Hash</span><span class="token punctuation">(</span><span class="token number">0003</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">Hash</span><span class="token punctuation">(</span><span class="token number">0001</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">Hash</span><span class="token punctuation">(</span><span class="token number">0004</span><span class="token punctuation">)</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  inAmerica<span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token function">Hash</span><span class="token punctuation">(</span><span class="token number">0001</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  onEarth<span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token function">Hash</span><span class="token punctuation">(</span><span class="token number">0001</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">Hash</span><span class="token punctuation">(</span><span class="token number">0002</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">Hash</span><span class="token punctuation">(</span><span class="token number">0003</span><span class="token punctuation">)</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  onMars<span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token function">Hash</span><span class="token punctuation">(</span><span class="token number">0004</span><span class="token punctuation">)</span> <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Wow, quite a lot actually:</p> <ul><li>There is 1 person in America and they are an American.</li> <li>There are 2 Americans that are not in America.</li> <li>The person on Mars is an American.</li> <li>I know how many people are in each place.</li> <li>There are only 4 unique people in this index.</li></ul> <p>This is a limited index, with a very limited set, and none of the links have been traversed
+but we know quite a lot already.</p></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.bff747f1.js" defer></script><script src="/assets/js/2.b932d417.js" defer></script><script src="/assets/js/6.3e06a623.js" defer></script>
+  </body>
+</html>
