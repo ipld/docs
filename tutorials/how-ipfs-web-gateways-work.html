@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>VuePress</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    
+    <meta name="description" content="">
+    <link rel="preload" href="/docs/assets/css/0.styles.f37cb93b.css" as="style"><link rel="preload" href="/docs/assets/js/app.dd9b9d12.js" as="script"><link rel="preload" href="/docs/assets/js/2.b932d417.js" as="script"><link rel="preload" href="/docs/assets/js/11.6e66776c.js" as="script"><link rel="prefetch" href="/docs/assets/js/10.4e50d6ba.js"><link rel="prefetch" href="/docs/assets/js/12.81ee194c.js"><link rel="prefetch" href="/docs/assets/js/3.8099ba9f.js"><link rel="prefetch" href="/docs/assets/js/4.7d5f245c.js"><link rel="prefetch" href="/docs/assets/js/5.03de80f3.js"><link rel="prefetch" href="/docs/assets/js/6.e2119f55.js"><link rel="prefetch" href="/docs/assets/js/7.99450c7e.js"><link rel="prefetch" href="/docs/assets/js/8.9eb408d2.js"><link rel="prefetch" href="/docs/assets/js/9.f7a2fa2f.js">
+    <link rel="stylesheet" href="/docs/assets/css/0.styles.f37cb93b.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/docs/" class="home-link router-link-active"></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="how-ipfs-web-gateways-work"><a href="#how-ipfs-web-gateways-work" class="header-anchor">#</a> How IPFS Web Gateways Work</h1> <p>This document talks through how IPFS web gateways work;
+the various forms of abstraction used in accomplishing parts of that task;
+and how and why these designs are cool (and how to can reuse parts of them).</p> <blockquote><p>🍵
+Note!  This is an <em>aspirational</em> document -- IPFS web gateways are a feature
+which has substantial history.  They haven't always worked like this.</p></blockquote> <h2 id="what-are-the-goals"><a href="#what-are-the-goals" class="header-anchor">#</a> What are the goals?</h2> <h3 id="what-are-ipfs-web-gateways-anyway"><a href="#what-are-ipfs-web-gateways-anyway" class="header-anchor">#</a> What are IPFS Web Gateways, anyway?</h3> <p>The &quot;web gateway&quot; is a feature of IPFS that serves the contents of <em>files</em> over <em>HTTP</em>.
+It selects what content to serve by taking the path from the URL requested,
+and splitting it into two parts: the <em>CID</em> and the remainder of the <em>path</em>.</p> <p>The CID is used to pick some piece of data to start at.
+The remainder of the path will be used as instructions to traverse IPLD data,
+starting from that data which the CID identified.
+At the end of that traversal, we'll try to understand whatever is pointed to as
+a bunch of bytes (a &quot;file&quot; isn't much more than that)... and pour it out into an HTTP response.</p> <p>This is useful because it means we can store data in IPFS,
+and that data can become easily accessible as normal webpages.</p> <h2 id="how-do-we-do-it"><a href="#how-do-we-do-it" class="header-anchor">#</a> How do we do it?</h2> <p>There's actually a ton of moving parts to this.
+Let's break it down:</p> <h3 id="files-are-just-bytes"><a href="#files-are-just-bytes" class="header-anchor">#</a> files are just bytes</h3> <p>(... in this context, anyway.)</p> <p>TODO expound</p> <h3 id="large-bytes-are-provided-by-adls-fbl-specifically"><a href="#large-bytes-are-provided-by-adls-fbl-specifically" class="header-anchor">#</a> large bytes are provided by ADLs (FBL, specifically)</h3> <p>TODO expound</p> <h3 id="directories-are-provided-by-adls-hamt-specifically"><a href="#directories-are-provided-by-adls-hamt-specifically" class="header-anchor">#</a> directories are provided by ADLs (HAMT, specifically)</h3> <p>TODO expound</p> <h3 id="navigating-the-path-is-defined-by-the-data-model"><a href="#navigating-the-path-is-defined-by-the-data-model" class="header-anchor">#</a> navigating the path is defined by the Data Model</h3> <p>... which is neat, because most of it is also going through ADLs,
+as we just described in the previous sections.</p> <p>Because defining an ADL requires defining how the ADL will make its
+content data legible to regular IPLD Data Model semantics,
+we can use standard library functions for pathing over this data.
+No special path handling logic is written for the Web Gateways
+(or other users of unixfsv2) at all!</p> <h3 id="knowing-where-to-use-adls-and-which-ones-is-defined-by-ipld-schemas"><a href="#knowing-where-to-use-adls-and-which-ones-is-defined-by-ipld-schemas" class="header-anchor">#</a> knowing where to use ADLs, and which ones, is defined by IPLD Schemas</h3> <p>... and more specifically, the Unixfsv2 schema,
+which is pretty common and used by much more than the IPFS web gateway system.</p> <p>The web gateways know about the schema for unixfsv2,
+and they assume that it applies to whatever data is being requested through the gateway system.</p> <p>If the data doesn't match, it won't be renderable through the web gateway
+(and we return errors about how and where the data ceased to match the
+schema that's expected for unixfsv2 data).</p> <p>If the data does match: then the schema also tells us where to expect ADLs
+to come into effect, and also tells us what Data Model semantics to expect
+from the data that is made available once the ADL logic is applied.</p> <h3 id="if-you-don-t-have-this-data-we-fetch-it"><a href="#if-you-don-t-have-this-data-we-fetch-it" class="header-anchor">#</a> if you don't have this data: we fetch it</h3> <p>This part hits the limits of what is directly in the scope of IPLD,
+but in brief, what happens in IPFS is:</p> <ul><li>a request for info about anyone who might have the missing content will be made to the DHT (provided by libp2p)</li> <li>contact with those other IPFS nodes will be made (again brokered by libp2p, which might be handling NAT traversal, etc)</li> <li>a protocol like bitswap or graphsync will be used to ferry raw blocks of IPLD data from those other IPFS nodes</li> <li>... and then the data is local: the process picks up again normally from there.</li></ul> <h2 id="what-if-we-want-to-peek-behind-the-curtain"><a href="#what-if-we-want-to-peek-behind-the-curtain" class="header-anchor">#</a> What if we want to peek behind the curtain?</h2> <p>All of the structures above are serialized in CBOR.
+All the magic comes from IPLD semantic features like ADLs and Schemas.</p> <p>What's neat about this is it's also very easy to drop all the magic
+and look directly at the raw data.</p> <p>Want to see the raw CBOR objects that make up all these structures?  No problem.
+They're hidden just barely under the hood, and we try to make it easy to lift that hood
+up and take a peek.</p> <p>In fact, you can inspect all the raw CBOR objects making up these structures
+simply by using IPLD libraries to start at the same CID,
+and then use regular Data Model traversal mechanisms to stroll around.
+If you provide the Unixfsv2 schema (and thereby its hints about where to apply ADLs),
+you'll get the high level view of &quot;directories&quot; (maps) and &quot;files&quot; (bytes);
+if you don't, you'll get to stroll around the raw CBOR objects instead.</p> <h2 id="what-s-reusable"><a href="#what-s-reusable" class="header-anchor">#</a> What's reusable?</h2> <p>Gosh.  Dang near everything.</p> <ul><li>The Unixfsv2 schema is reusable.  If you want to describe filesystem-like data, it's probably got what you want.</li> <li>The Flexible Byte Layout (FBL) Advanced Data Layout is reusable for any of your big-sharded-byte-sequence needs!
+It's not unique to Unixfsv2 nor the IPFS web gateways; you can drop it in anywhere you want in any IPLD system.</li> <li>The HAMT ADL is similarly reusable for any of your big-sharded-map needs!
+It's not unique to Unixfsv2 nor the IPFS web gateways; you can drop it in anywhere you want in any IPLD system.</li> <li>... even if you don't want any of these things in particular, hopefully this is
+a good example of how you can use the various parts of the IPLD system to accomplish your own goals!</li></ul> <p>The whole IPFS web gateway system was built in terms of standard IPLD components, assembled:
+schemas, ADLs, and plain basic pathing and traversal over the Data Model were all we needed to accomplish all this.</p> <h2 id="what-other-limits-does-this-have"><a href="#what-other-limits-does-this-have" class="header-anchor">#</a> What other limits does this have?</h2> <p>It's important to note that the web gateways do almost all of this work
+using IPLD libraries and not much else... but, ADLs also have some special caveats.</p> <p>Because ADLs need some logic to make their translations of data work,
+and because IPLD doesn't itself include an interpreter or scripting language runtime
+(and even if it did, we'd be worried about capping its resource budget)...
+IPLD libraries typically require that a list of allowed ADLs be defined explicitly.</p> <p>The IPFS web gateways specifically allow the FBL and HAMT ADLs.</p> <p>If you wanted to produce data that used other sharding algorithms,
+but was otherwise structurally matching the Unixfsv2 schema,
+and wanted those to be correctly displayed by some IPFS web gateway?
+You'd need to reconfigure that gateway to expand the list of allowed ADLs
+to include whatever sharding system it is your wanted to use.</p> <h2 id="historically-how-did-this-previously-work"><a href="#historically-how-did-this-previously-work" class="header-anchor">#</a> Historically: how did this previously work?</h2> <blockquote><p>📕
+This section is historical notes -- it's here for readers who were familiar
+with the old system, and want to be refreshed on how it compares to the new
+designs documented above, or for readers who want to understand some of the
+learning experiences gathered from previous bouts at this work.
+However, you shouldn't really need to read it unless one of those two
+sources of curiosity appeals to you.</p></blockquote> <p>The earliest implementations of IPFS used a codec called &quot;dag-pb&quot; to represent files and directories.
+(&quot;dag-pb&quot; is still around as an IPLD codec -- but nowadays, we consider it one of the more limited codecs, and a very esoteric one at that.)</p> <p>The &quot;dag-pb&quot; codec included many responsibilities that we now handle separately:
+it included the concept of directories (and sharding them) in the codec itself (whereas we now split this out into map ADLs);
+similarly, it include the concept of files (and sharding their component bytes) in the codec itself (whereas we now split this out into bytes ADLs).</p> <p>By baking these things into the codec itself, there were several major disadvantages compared to the present IPLD system design:</p> <ul><li>by baking these sharding mechanisms into a single codec, it was not possible to reuse them with other codecs;</li> <li>because the sharding mechanisms were baked in the codec (and at the time,
+there wasn't really any coherent definiton of a Data Model at all),
+there was no way to <em>switch</em> between high level and raw views of the data --
+as a result, these systems were much harder to debug;</li> <li>because the sharding mechanisms were tightly bound into the codec,
+there was no way to introduce or even experiment with other sharding mechanisms!</li></ul> <p>Looking at the other direction, &quot;dag-pb&quot;, even with all its special features, was more limited than the modern IPLD system designs:</p> <ul><li>by extracting the concept of ADLs, we've made it possible to shard other datastructures as well --
+for example, we can now easily support sharded lists, a concept which simply didn't exist in dag-pb.</li> <li>dag-pb had very (very) rigid ideas about the topology of data.
+In modern terms, we would say it doesn't support the complete IPLD Data Model.
+The huge behavioral gaps and asymmetry in representability between dag-pb and
+other early IPLD codecs produced a great deal of confusion.</li></ul></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/docs/assets/js/app.dd9b9d12.js" defer></script><script src="/docs/assets/js/2.b932d417.js" defer></script><script src="/docs/assets/js/11.6e66776c.js" defer></script>
+  </body>
+</html>
