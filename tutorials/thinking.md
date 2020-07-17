@@ -25,7 +25,15 @@ var todo
 <template v-slot:rust>
 
 ```rust
-let todo
+use libipld::ipld;
+
+fn main() {
+    let person = ipld!({
+        "name": "Mikeal Rogers",
+        "github": "mikeal",
+        "twitter": "@mikeal",
+    });
+}
 ```
 
 </template>
@@ -82,7 +90,24 @@ var todo
 <template v-slot:rust>
 
 ```rust
-let todo
+use libipld::{ipld, Ipld};
+
+fn index(person: Ipld, planet: &mut Vec<Ipld>) {
+    planet.push(person)
+}
+
+fn main() {
+    let mut earth = Vec::new();
+    let mut pluto = Vec::new();
+
+    index(ipld!({ "name": "Mikeal Rogers" }), &mut earth);
+    index(ipld!({ "name": "Eric Myhre" }), &mut earth);
+    index(ipld!({ "name": "Volker Mische" }), &mut earth);
+    index(ipld!({ "name": "Emory" }), &mut pluto);
+    index(ipld!({ "name": "Oglethorpe" }), &mut pluto);
+
+    let galaxy = ipld!({ "earth": earth, "pluto": pluto });
+}
 ```
 
 </template>
@@ -141,7 +166,21 @@ var todo
 <template v-slot:rust>
 
 ```rust
-let todo
+use libipld::block::Block;
+use libipld::multihash::Code;
+use libipld::{ipld, IpldCodec};
+
+fn main() {
+    let person = ipld!({
+        "name": "Mikeal Rogers",
+        "github": "mikeal",
+        "twitter": "@mikeal",
+    });
+
+    let mut block = Block::encoder(person, IpldCodec::DagCbor, Code::Sha2_256);
+    let cid = block.cid().unwrap();
+    println!("{}", cid);
+}
 ```
 
 </template>
@@ -181,7 +220,7 @@ var todo
 <template v-slot:rust>
 
 ```rust
-let todo
+let mut block = Block::encoder(person, IpldCodec::DagCbor, Code::Sha2_256);
 ```
 
 </template>
@@ -208,7 +247,7 @@ var todo
 <template v-slot:rust>
 
 ```rust
-let todo
+let cid = block.cid().unwrap();
 ```
 
 </template>
