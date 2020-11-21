@@ -25,7 +25,17 @@ var todo
 <template v-slot:rust>
 
 ```rust
-let todo
+struct Person {
+  name: String,
+  github: String,
+  twitter: String,
+}
+
+let person = Person {
+  name: String::from("Mikeal Rogers"),
+  github: String::from("mikeal"),
+  twitter: String::from("@mikeal"),
+};
 ```
 
 </template>
