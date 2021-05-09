@@ -103,7 +103,7 @@ includes the content address (hash), the hash algorithm (double-SHA2-256) and th
 IPLD codec (e.g. `bitcoin-block` or `bitcoin-tx`).
 
 This lets you build data structures that freely link between formats
-that can be traversed though a normalized data model. Effectively,
+that can be traversed through a normalized data model. Effectively,
 you can write format agnostic tools for reading, distributing, and
 persisting all content addressed data. Your custom IPLD data structure, encoded
 in your chosen IPLD codec, can link to anyone else's IPLD data, arbitrary
