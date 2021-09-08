@@ -1,3 +1,7 @@
+# ⚠️ DEPRECATED
+Items in this repo may be outdated or aspirational.
+As of 202107, this docs repo has been deprecated in favor of https://github.com/ipld/ipld/tree/master/docs ([HTML form](https://ipld.io/docs/)), which has been audited to at least not include any inaccurate information.
+
 # InterPlanetary Linked Data
 
 Welcome to the internet of data structures!
