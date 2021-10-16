@@ -1,3 +1,18 @@
+
+!!!
+
+This document has **moved**.
+
+You'll now find information like this in the [ipld/ipld](https://github.com/ipld/ipld/) meta-repo,
+and published to the web at https://ipld.io/ .
+
+All documentation, fixtures, specifications, and web content is now gathered into that repo.
+Please update your links, and direct new contributions there.
+
+!!!
+
+----
+
 Objectives and Scope of IPLD
 ============================
 
@@ -81,6 +96,3 @@ Things IPLD is not concerned with
   IPLD should even work fine and provide value with *no* networking, or work fantastically with "sneakernet".
   (The libp2p project is also pursuing useful work in networking and focused on decentralized systems;
   it's not directly related to IPLD, but they should work well together, and you might want to check it out.)
-
-
-
